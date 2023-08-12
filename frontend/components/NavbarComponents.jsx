@@ -30,16 +30,17 @@ const HeaderComponets = () => {
             className="rounded-full"
           />{" "}
         </div>
-        <div className="text-2xl ml-3">Fashion-X</div>
+        <div className="text-3xl ml-3">Fashion-X</div>
       </div>
       <Group>
         <TextInput
           placeholder="Search Dress"
-          rightSection={<IconSearch size="1.2rem" />}
+          rightSection={<IconSearch size="2rem" />}
+          size="lg"
         />
         <ActionIcon
           onClick={() => toggleColorScheme()}
-          size="lg"
+          size="xl"
           sx={(theme) => ({
             backgroundColor:
               theme.colorScheme === "dark"
@@ -52,14 +53,14 @@ const HeaderComponets = () => {
           })}
         >
           {colorScheme === "dark" ? (
-            <IconSun size="1.2rem" />
+            <IconSun size="2rem" />
           ) : (
-            <IconMoonStars size="1.2rem" />
+            <IconMoonStars size="2rem" />
           )}
         </ActionIcon>
 
         <Group spacing={7}>
-          <IconShoppingCart size="1.2rem" stroke={1.5} />
+          <IconShoppingCart size="2rem" stroke={1.5} />
         </Group>
       </Group>
     </>

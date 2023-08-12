@@ -1,3 +1,5 @@
 import { Carousel } from "./CarouselProducts";
+import { Heropage } from "./Heropage";
+import { ThreeItemGrid } from "./Three-item";
 
-export { Carousel };
+export { Carousel, Heropage, ThreeItemGrid };
