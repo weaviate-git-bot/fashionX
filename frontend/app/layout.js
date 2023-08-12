@@ -1,5 +1,8 @@
 import './globals.css'
+import ThemeProvider from "../components/ThemeProvider"
 import { Inter } from 'next/font/google'
+import Navbar from '../components/Navbar'
+import { Carousel } from '../components/CarouselProducts'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -11,7 +14,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <ThemeProvider>
+
+        <Navbar>
+
+          {children}
+
+        </Navbar >
+
+
+      </ThemeProvider>
     </html>
   )
 }
