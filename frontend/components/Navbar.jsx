@@ -12,7 +12,7 @@ const NavbarComponent = ({ children }) => {
       height="100vh"
       header={
         <Header
-          height={60}
+          height={100}
           p="xs"
           className="flex justify-between items-center pl-5 pr-5"
         >
