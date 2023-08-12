@@ -12,7 +12,7 @@ const font = Nunito({ subsets: ["latin"] });
 function ThemeProvider({ children }) {
   const [colorScheme, setColorScheme] = useLocalStorage(
     "color-scheme",
-    ColorScheme
+    "dark"
   );
 
   const toggleColorScheme = () =>
