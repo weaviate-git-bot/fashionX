@@ -1,5 +1,6 @@
 import './globals.css'
 import ThemeProvider from "../components/ThemeProvider"
+import ThemeWrapper from "../components/ThemeWrapper"
 import { Inter } from 'next/font/google'
 import Navbar from '../components/Navbar'
 import { Carousel } from '../components/CarouselProducts'
@@ -15,15 +16,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <ThemeProvider>
-
         <Navbar>
+          <ThemeWrapper>
 
-          {children}
 
+            {children}
+
+
+
+          </ThemeWrapper>
         </Navbar >
-
-
       </ThemeProvider>
-    </html>
+    </html >
   )
 }

@@ -44,10 +44,41 @@ export function Carousel() {
       },
       handle: "product-1",
     },
+
+    {
+      title: "Product 1",
+      featuredImage: {
+        url: "https://www.nicepng.com/png/detail/802-8027356_fashion-clipart-fashion-icon-fashion-icon-png.png",
+      },
+      priceRange: {
+        maxVariantPrice: { amount: "10$", currencyCode: "USD" },
+      },
+      handle: "product-1",
+    },
+    {
+      title: "Product 1",
+      featuredImage: {
+        url: "https://www.nicepng.com/png/detail/802-8027356_fashion-clipart-fashion-icon-fashion-icon-png.png",
+      },
+      priceRange: {
+        maxVariantPrice: { amount: "10$", currencyCode: "USD" },
+      },
+      handle: "product-1",
+    },
+    {
+      title: "Product 1",
+      featuredImage: {
+        url: "https://www.nicepng.com/png/detail/802-8027356_fashion-clipart-fashion-icon-fashion-icon-png.png",
+      },
+      priceRange: {
+        maxVariantPrice: { amount: "10$", currencyCode: "USD" },
+      },
+      handle: "product-1",
+    },
   ];
 
   return (
-    <div className=" w-full overflow-x-auto pb-6 pt-1">
+    <div className=" w-full overflow-x-auto pt-1">
       <ul className="flex animate-carousel gap-4">
         {carouselProducts.map((product, i) => (
           <li
