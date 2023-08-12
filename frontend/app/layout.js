@@ -4,6 +4,7 @@ import ThemeWrapper from "../components/ThemeWrapper"
 import { Inter } from 'next/font/google'
 import Navbar from '../components/Navbar'
 import { Carousel } from '../components/CarouselProducts'
+import { Footer } from "../components/layout/Footer"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,7 +24,7 @@ export default function RootLayout({ children }) {
             {children}
 
 
-
+            <Footer />
           </ThemeWrapper>
         </Navbar >
       </ThemeProvider>

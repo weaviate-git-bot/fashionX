@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@mantine/core";
 import React from "react";
 
 export function Heropage() {
@@ -15,7 +16,35 @@ export function Heropage() {
           <p class="coords">N 49° 16' 35.173" / W 0° 42' 11.30"</p>
 
           <div class="ellipses-container">
-            <h2 class="greeting">FASHION-X</h2>
+            <div
+              class="greeting"
+              style={{
+                top: 0,
+                left: 0,
+                display: "flex",
+                height: "100%",
+                width: "100%",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "space-evenly",
+                zIndex: 10,
+              }}
+            >
+              <h2 style={{ textAlign: "center" }}>FASHION-X</h2>
+              <h3 style={{ textAlign: "center" }}>
+                THE AI OF FASHION
+              </h3>
+              <Button
+                variant="primary"
+                style={{
+                  fontSize: "2.875rem",
+                  cursor: "pointer",
+                  textAlign: "center",
+                }}
+              >
+                GET STARTED
+              </Button>
+            </div>
 
             <div class="ellipses ellipses__outer--thin">
               <div class="ellipses ellipses__orbit"></div>
