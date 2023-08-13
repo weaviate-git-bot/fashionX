@@ -1,7 +1,9 @@
-const express = require('express');
-const weaviate = require('weaviate-client');
-const dotenv = require('dotenv');
-const fs = require('fs');
+
+import express from 'express';
+import weaviate from 'weaviate-client';
+import dotenv from 'dotenv';
+import fs from 'fs';
+import { db } from "./firebase.js"
 
 dotenv.config();
 
@@ -112,7 +114,36 @@ createSchema()
         console.log(err);
     });
 
+
+const temp = async () => {
+    const dir = "./images"
+
+    const files = fs.readdirSync(dir);
+
+    const newfiles = files.filter(file => !file.endsWith(".json")).map(file => file.substring(0, file.lastIndexOf(".")))
+
+    newfiles.forEach(async (file) => {
+
+        const imageMetaData = fs.readFileSync(`${dir}/${file}.json`);
+        const imageMetaDataJson = JSON.parse(imageMetaData);
+        imageMetaDataJson.productID = file.substring(0, file.lastIndexOf(".json"))
+
+        db.collection("metadata").add(imageMetaDataJson)
+
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        const imageData = fs.readFileSync(`${dir}/${file}.jpg`);
+        const bg4 = Buffer.from(imageData).toString('base64');
+        const res = await client.data.creator().withClassName("Fashion")
+            .withProperties({ image: bg4, productID: file.substring(0, file.lastIndexOf(".json")) })
+            .do()
+
+        console.log(res)
+    })
+}
+
 loadImages()
+// temp()
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
 
