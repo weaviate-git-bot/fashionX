@@ -56,8 +56,13 @@ async function createSchema() {
 
 
 const app = express();
-app.use(cors())
+app.use(cors({
+    origin: "*",
+    credentials: true
+}))
 app.use(bodyParser.json({ limit: "50mb" }))
+
+app.get('/test', (req, res) => { res.send('Hello World!') })
 
 // @TODO Change it after the frontend is ready
 
@@ -135,7 +140,9 @@ app.post("/related-products/:cnt", async (req, res) => {
 })
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
+
+
 
 async function loadImages() {
 
