@@ -1,23 +1,36 @@
 "use client";
 import { Button } from "@mantine/core";
-import React from "react";
+import React, { useEffect } from "react";
+import axios from "axios";
 
 export function Heropage() {
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/frontpage/3")
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <div
-      class="container"
+      className="container"
       style={{
         maxWidth: "100%",
         maxHeight: "80vh",
       }}
     >
-      <div class="container__item landing-page-container">
-        <div class="content__wrapper">
-          <p class="coords">N 49° 16' 35.173" / W 0° 42' 11.30"</p>
+      <div className="container__item landing-page-container">
+        <div className="content__wrapper">
+          <p className="coords">
+            N 49° 16' 35.173" / W 0° 42' 11.30"
+          </p>
 
-          <div class="ellipses-container">
+          <div className="ellipses-container">
             <div
-              class="greeting"
+              className="greeting"
               style={{
                 top: 0,
                 left: 0,
@@ -46,20 +59,20 @@ export function Heropage() {
               </Button>
             </div>
 
-            <div class="ellipses ellipses__outer--thin">
-              <div class="ellipses ellipses__orbit"></div>
+            <div className="ellipses ellipses__outer--thin">
+              <div className="ellipses ellipses__orbit"></div>
             </div>
 
-            <div class="ellipses ellipses__outer--thick"></div>
+            <div className="ellipses ellipses__outer--thick"></div>
           </div>
 
-          <div class="scroller">
-            <p class="page-title">home</p>
+          <div className="scroller">
+            <p className="page-title">home</p>
 
-            <div class="timeline">
-              <span class="timeline__unit"></span>
-              <span class="timeline__unit timeline__unit--active"></span>
-              <span class="timeline__unit"></span>
+            <div className="timeline">
+              <span className="timeline__unit"></span>
+              <span className="timeline__unit timeline__unit--active"></span>
+              <span className="timeline__unit"></span>
             </div>
           </div>
         </div>

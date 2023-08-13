@@ -1,7 +1,10 @@
+"use client";
 import { GridTileImage } from "components/grid/tile";
 import Link from "next/link";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
 function ThreeItemGridItem({ item, size, priority }) {
+  console.log(item.id);
   return (
     <div
       className={
@@ -12,10 +15,10 @@ function ThreeItemGridItem({ item, size, priority }) {
     >
       <Link
         className="relative block aspect-square h-full w-full"
-        href={`/product/${item.handle}`}
+        href={`/product/${item.id}`}
       >
         <GridTileImage
-          src={item.featuredImage.url}
+          src={item.styleImages.default.imageURL}
           fill
           sizes={
             size === "full"
@@ -26,10 +29,9 @@ function ThreeItemGridItem({ item, size, priority }) {
           alt={item.title}
           label={{
             position: size === "full" ? "center" : "bottom",
-            title: item.title,
-            amount: item.priceRange.maxVariantPrice.amount,
-            currencyCode:
-              item.priceRange.maxVariantPrice.currencyCode,
+            title: item.productDisplayName,
+            amount: item.price,
+            currencyCode: "INR",
           }}
         />
       </Link>
@@ -37,54 +39,42 @@ function ThreeItemGridItem({ item, size, priority }) {
   );
 }
 
-export async function ThreeItemGrid() {
-  const homepageItems = [
-    {
-      title: "Product 1",
-      featuredImage: {
-        url: "https://www.nicepng.com/png/detail/802-8027356_fashion-clipart-fashion-icon-fashion-icon-png.png",
-      },
-      priceRange: {
-        maxVariantPrice: { amount: "10$", currencyCode: "USD" },
-      },
-      handle: "product-1",
-    },
-    {
-      title: "Product 1",
-      featuredImage: {
-        url: "https://www.nicepng.com/png/detail/802-8027356_fashion-clipart-fashion-icon-fashion-icon-png.png",
-      },
-      priceRange: {
-        maxVariantPrice: { amount: "10$", currencyCode: "USD" },
-      },
-      handle: "product-1",
-    },
-    {
-      title: "Product 1",
-      featuredImage: {
-        url: "https://www.nicepng.com/png/detail/802-8027356_fashion-clipart-fashion-icon-fashion-icon-png.png",
-      },
-      priceRange: {
-        maxVariantPrice: { amount: "10$", currencyCode: "USD" },
-      },
-      handle: "product-1",
-    },
-  ];
+export function ThreeItemGrid() {
+  const [homepageItems, setHomepageItems] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/frontpage/3")
+      .then((res) => {
+        console.log(res);
+        setHomepageItems(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const [firstProduct, secondProduct, thirdProduct] = homepageItems;
 
   return (
     <section className="mx-auto grid max-w-screen-2xl gap-7 px-4 pb-4 md:grid-cols-6 md:grid-rows-2 m-5">
-      <ThreeItemGridItem
-        size="full"
-        item={firstProduct}
-        priority={true}
-      />
-      <ThreeItemGridItem
-        size="half"
-        item={secondProduct}
-        priority={true}
-      />
-      <ThreeItemGridItem size="half" item={thirdProduct} />
+      {firstProduct && (
+        <ThreeItemGridItem
+          size="full"
+          item={firstProduct.data}
+          priority={true}
+        />
+      )}
+      {secondProduct && (
+        <ThreeItemGridItem
+          size="half"
+          item={secondProduct.data}
+          priority={true}
+        />
+      )}
+      {thirdProduct && (
+        <ThreeItemGridItem size="half" item={thirdProduct.data} />
+      )}
     </section>
   );
 }
