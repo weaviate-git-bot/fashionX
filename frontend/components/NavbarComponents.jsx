@@ -12,8 +12,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import Image from "next/image";
-// import useLoginModal from "../hooks/useLoginModal";
-// import useAuthHook from "../hooks/useAuthHook";
+import Link from "next/link";
 
 const HeaderComponets = () => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -30,7 +29,10 @@ const HeaderComponets = () => {
             className="rounded-full"
           />{" "}
         </div>
-        <div className="text-3xl ml-3">Fashion-X</div>
+        <Link href="/">
+          {" "}
+          <div className="text-3xl ml-3">Fashion-X</div>
+        </Link>
       </div>
       <Group>
         <TextInput

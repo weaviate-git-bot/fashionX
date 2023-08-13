@@ -12,7 +12,7 @@ export function GridTileImage({
   return (
     <div
       className={clsx(
-        "group flex h-full w-full items-center justify-center overflow-hidden rounded-lg border bg-white hover:border-blue-600 bg-transparent backdrop-filter backdrop-blur-sm transition duration-300 ease-in-out",
+        "group flex h-full w-full items-center justify-center overflow-hidden rounded-lg border  hover:border-blue-600 bg-transparent backdrop-filter backdrop-blur-sm transition duration-300 ease-in-out",
         {
           relative: label,
           "border-2 border-blue-600": active,
@@ -36,6 +36,7 @@ export function GridTileImage({
             backgroundColor: "transparent",
           }}
           {...props}
+          alt={label.title}
         />
       ) : null}
       {label ? (
