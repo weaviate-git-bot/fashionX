@@ -28,7 +28,7 @@ export function Carousel() {
       <ul className="flex animate-carousel gap-4">
         {carouselProducts.map((item, i) => (
           <li
-            key={item.data.productDisplayName}
+            key={item.data.productID}
             className="relative aspect-square h-[30vh] max-h-[275px] w-2/3 max-w-[475px] flex-none md:w-1/3"
           >
             <Link

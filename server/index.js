@@ -139,6 +139,14 @@ app.post("/related-products/:cnt", async (req, res) => {
     res.send(products)
 })
 
+app.get("/product/:productID", async (req, res) => {
+    const { productID } = req.params
+    const productData = await db.collection("metadata").where("productID", "==", productID).get()
+    console.log(productData.docs[0].data())
+    const product = productData.docs[0].data()
+    res.send(product)
+})
+
 
 const PORT = process.env.PORT || 8080;
 
