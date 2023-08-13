@@ -5,6 +5,7 @@ import { Heropage } from "../components/Heropage"
 
 
 export default function Home() {
+
   return (
     <div style={{ overflowY: "scroll" }}>
       <Heropage />
