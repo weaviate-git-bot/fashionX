@@ -1,8 +1,6 @@
 "use client";
 import { AppShell, Navbar, Header } from "@mantine/core";
-import { IconSun, IconMoonStars } from "@tabler/icons-react";
-import Image from "next/image";
-import Head from "next/head";
+
 import NavbarComponents from "./NavbarComponents";
 
 const NavbarComponent = ({ children }) => {
