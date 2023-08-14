@@ -1,24 +1,60 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
-  IconSun,
-  IconMoonStars,
   IconShoppingCart,
   IconSearch,
+  IconPlus,
 } from "@tabler/icons-react";
 import {
   useMantineColorScheme,
   ActionIcon,
   Group,
   TextInput,
+  Modal,
 } from "@mantine/core";
 import Image from "next/image";
 import Link from "next/link";
+import { useDisclosure } from "@mantine/hooks";
 
 const HeaderComponets = () => {
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-
+  const [opened, { open, close }] = useDisclosure(false);
   return (
     <>
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="Customize your product"
+        centered
+        size="lg"
+        transitionProps={{
+          transition: "fade",
+          duration: 600,
+          timingFunction: "linear",
+        }}
+      >
+        {/* Modal content */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <img
+            width="100"
+            height="100"
+            src="https://img.icons8.com/emoji/48/magic-wand.png"
+            alt="magic-wand"
+            className="hover:border-cyan-500"
+            style={{
+              border:
+                "1px solid rgb(38 38 38 / var(--tw-border-opacity))",
+              padding: "12px",
+              borderRadius: "10px",
+              cursor: "pointer",
+            }}
+          />
+        </div>
+      </Modal>
       <div className="flex items-center cursor-pointer">
         <div>
           <Image
@@ -34,31 +70,17 @@ const HeaderComponets = () => {
           <div className="text-3xl ml-3">Fashion-X</div>
         </Link>
       </div>
-      <Group>
+      <Group spacing={7}>
         <TextInput
           placeholder="Search Dress"
           rightSection={<IconSearch size="2rem" />}
           size="lg"
+          style={{ borderRadius: "50%" }}
         />
-        <ActionIcon
-          onClick={() => toggleColorScheme()}
-          size="xl"
-          sx={(theme) => ({
-            backgroundColor:
-              theme.colorScheme === "dark"
-                ? theme.colors.dark[6]
-                : theme.colors.gray[0],
-            color:
-              theme.colorScheme === "dark"
-                ? theme.colors.yellow[4]
-                : theme.colors.blue[6],
-          })}
-        >
-          {colorScheme === "dark" ? (
-            <IconSun size="2rem" />
-          ) : (
-            <IconMoonStars size="2rem" />
-          )}
+      </Group>
+      <Group>
+        <ActionIcon onClick={open}>
+          <IconPlus size="2rem" stroke={1.5} />
         </ActionIcon>
 
         <Group spacing={7}>

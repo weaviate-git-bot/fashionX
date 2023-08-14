@@ -1,11 +1,12 @@
 "use client";
 import axios from "axios";
-import { notFound } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 // import { Footer } from "../../../components/layout/Footer";
 import { ProductDescription } from "../../../components";
 import { GridTileImage } from "../../../components/grid/tile";
 import { Gallery } from "../../../components/product/gallery";
+import { useDisclosure } from "@mantine/hooks";
+import { Modal } from "@mantine/core";
 
 // import GridTileImage from "../components/grid/tile";
 // import Footer from "../components/layout/Footer";
@@ -110,7 +111,7 @@ export const runtime = "edge";
 
 export default function ProductPage({ params }) {
   const [item, setItem] = useState({});
-  console.log(params.handle);
+  const [opened, { open, close }] = useDisclosure(false);
   useEffect(() => {
     axios
       .get(`http://localhost:8080/product/${params.handle}`)
@@ -187,6 +188,14 @@ export default function ProductPage({ params }) {
 
   return (
     <>
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="Virtual Try On"
+        centered
+      >
+        {/* Modal content */}
+      </Modal>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -196,7 +205,9 @@ export default function ProductPage({ params }) {
       <div className="mx-auto max-w-screen-2xl px-4">
         <div
           className="flex flex-col    md:p-12 lg:flex-row lg:gap-8"
-          style={{ justifyContent: "space-between" }}
+          style={{
+            justifyContent: "space-between",
+          }}
         >
           <div className="h-full w-full basis-full lg:basis-4/6 bg-transparent backdrop-filter backdrop-blur-sm border p-8 rounded-lg  border-neutral-200 dark:border-neutral-800">
             <Gallery
@@ -209,6 +220,12 @@ export default function ProductPage({ params }) {
 
           <div className="basis-full lg:basis-2/6 border  border-neutral-200 dark:border-neutral-800 rounded-lg bg-transparent backdrop-filter p-8 backdrop-blur-sm">
             <ProductDescription product={product} />
+            <button
+              onClick={open}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-5 px-5 rounded-lg w-100"
+            >
+              Virtual Try On
+            </button>
           </div>
         </div>
         <Suspense>

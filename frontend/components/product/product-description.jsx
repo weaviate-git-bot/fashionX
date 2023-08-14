@@ -1,6 +1,6 @@
 // import { AddToCart } from "components/cart/add-to-cart";
 import Price from "../price";
-import Prose from "components/prose";
+import Prose from "../Prose";
 // import { Product } from "lib/shopify/types";
 // import { VariantSelector } from "./variant-selector";
 
@@ -26,7 +26,8 @@ export function ProductDescription({ product }) {
 
       {product.descriptionHtml ? (
         <Prose
-          className="mb-6 text-sm leading-tight dark:text-white/[60%]"
+          className="mb-6 leading-tight dark:text-white/[60%]"
+          style={{ height: "20%" }}
           html={product.descriptionHtml}
         />
       ) : null}
