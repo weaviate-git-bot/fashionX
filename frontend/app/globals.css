@@ -29,10 +29,13 @@ html {
   height: 200px;
 }
 .fixed-size-button {
-  width: 150px;
-  height: 50px;
+  width: 100px;
+  height: 40px;
 }
 
+.mark{
+  @apply border-[1px] border-red-500
+}
 
 #stars {
   width: 1px;

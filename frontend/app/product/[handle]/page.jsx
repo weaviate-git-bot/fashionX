@@ -7,6 +7,7 @@ import { GridTileImage } from "../../../components/grid/tile";
 import { Gallery } from "../../../components/product/gallery";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal } from "@mantine/core";
+import TransformModal from '../../../components/TransformModal'
 
 // import GridTileImage from "../components/grid/tile";
 // import Footer from "../components/layout/Footer";
@@ -185,7 +186,6 @@ export default function ProductPage({ params }) {
       lowPrice: product.priceRange.minVariantPrice.amount,
     },
   };
-
   return (
     <>
       <Modal
@@ -193,8 +193,9 @@ export default function ProductPage({ params }) {
         onClose={close}
         title="Virtual Try On"
         centered
+        size="70%"
       >
-        {/* Modal content */}
+        <TransformModal clothImageUrl={product.images[0].url}/> 
       </Modal>
       <script
         type="application/ld+json"
@@ -252,7 +253,7 @@ function RelatedProducts({ imageURL }) {
         reader.readAsDataURL(blob);
       });
       setBase64Image(base64);
-      console.log(base64);
+      // console.log(base64);
     } catch (err) {
       console.log(err);
     }
