@@ -1,7 +1,7 @@
 "use client";
 import clsx from "clsx";
 import Image from "next/image";
-import Label from "../label";
+import Label from "../Label";
 
 export function GridTileImage({
   isInteractive = true,

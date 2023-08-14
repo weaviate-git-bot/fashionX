@@ -1,13 +1,8 @@
 "use client";
 import clsx from "clsx";
-import Price from "./price";
+import Price from "./Price";
 
-const Label = ({
-  title,
-  amount,
-  currencyCode,
-  position = "bottom",
-}) => {
+const Label = ({ title, amount, currencyCode, position = "bottom" }) => {
   return (
     <div
       className={clsx(
