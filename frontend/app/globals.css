@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @keyframes slide {
   0% {
     transform: translateX(0);
@@ -28,7 +27,7 @@
 }
 
 .mark {
-  @apply border-[1px] border-red-500
+  @apply border-[1px] border-red-500;
 }
 
 #stars {
@@ -915,8 +914,6 @@ h1 {
   margin: 0;
 }
 
-
-
 .ellipses-container {
   width: 50rem;
   height: 50rem;
@@ -1107,6 +1104,38 @@ h1 {
   }
 }
 
+.label::before {
+  content: "";
+  height: "5px";
+  background-color: #272530;
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 100%;
+  z-index: -1;
+}
+
+.text-input:focus {
+  border: 2px solid #fd7f0a;
+}
+
+.text-input:focus + .label,
+.filled {
+  top: -10px;
+  font-size: 14px;
+  color: #fd7f0a;
+}
+
+.text-input::placeholder {
+  font-size: 16px;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.text-input:focus::placeholder {
+  opacity: 1;
+  animation-delay: 0.2s;
+}
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -1130,7 +1159,6 @@ body {
     )
     rgb(var(--background-start-rgb));
 } */
-
 
 .heading {
   color: white !important;

@@ -1,6 +1,20 @@
 "use client";
 import { useState } from "react";
 import prevChats from "./prev-chats/prevChats";
+import {
+  Input,
+  Tooltip,
+  ActionIcon,
+  AppShell,
+  Navbar,
+  rem,
+  Button,
+} from "@mantine/core";
+import {
+  IconBrandTwitter,
+  IconAlertCircle,
+} from "@tabler/icons-react";
+import { IconPlus, IconArrowAutofitRight } from "@tabler/icons-react";
 
 export default function Chat() {
   const handleChange = (chat) => {
@@ -24,7 +38,9 @@ export default function Chat() {
     if (isNewchat) {
       prevChats.unshift(currChat);
     } else {
-      const arrIndex = prevChats.findIndex((obj) => obj.name == currChat.name);
+      const arrIndex = prevChats.findIndex(
+        (obj) => obj.name == currChat.name
+      );
       prevChats[arrIndex] = currChat;
     }
   };
@@ -37,88 +53,69 @@ export default function Chat() {
   });
 
   return (
-    <div className="flex flex-row h-5/6">
-      <div className="flex flex-col basis-1/5">
-        {/* NEW CHAT BUTTON */}
-        <div className="py-4">
-          <button
-            onClick={() => {
-              setChatStatus(true);
-              showCurrChat({ name: "lorem", convo: [] });
-            }}
-            className="flex w-4/5 mx-auto justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            New Chat +
-          </button>
-        </div>
+    <>
+      <AppShell
+        style={{ height: "100vh" }}
+        padding="md"
+        navbar={
+          <Navbar width={{ base: 300 }} p="xs">
+            <Button
+              variant="gradient"
+              gradient={{ from: "indigo", to: "cyan" }}
+              leftIcon={<IconPlus size={rem(18)} />}
+              styles={(theme) => ({
+                root: {
+                  backgroundColor: "#00acee",
+                  border: 0,
+                  height: rem(42),
+                  paddingLeft: rem(20),
+                  paddingRight: rem(20),
+                  "&:not([data-disabled])": theme.fn.hover({
+                    backgroundColor: theme.fn.darken("#00acee", 0.05),
+                  }),
+                },
 
-        {/* CURRENT CHAT */}
-        <div className="h-5/6">
-          <div className="flex flex-col h-full overflow-y-auto">
-            {prevChats.map((chat) => (
-              <button
-                onClick={() => handleChange(chat)}
-                className="flex w-4/5 mt-6 mx-auto justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                {chat.name}
-              </button>
-            ))}
+                leftIcon: {
+                  marginRight: theme.spacing.md,
+                },
+              })}
+            >
+              Follow on Twitter
+            </Button>
+          </Navbar>
+        }
+      >
+        <div
+          className=""
+          style={{ height: "100vh", position: "relative" }}
+        >
+          <div
+            className=""
+            style={{
+              position: "absolute",
+              bottom: 110,
+              left: 200,
+              minWidth: "60%",
+            }}
+          >
+            <form onSubmit={handleSubmit} className="">
+              <Input
+                placeholder="Your twitter"
+                size="xl"
+                style={{ width: "100%" }}
+                rightSection={
+                  <ActionIcon
+                    color="primary"
+                    style={{ marginBottom: "8px" }}
+                  >
+                    <IconArrowAutofitRight size="2rem" />
+                  </ActionIcon>
+                }
+              />
+            </form>
           </div>
         </div>
-      </div>
-
-      <div className="flex flex-col basis-4/5 text-3xl">
-        {/* SHOW CHAT ON CLICK */}
-        <div className="h-full pb-5">
-          <ul
-            role="list"
-            className="h-full flex flex-col justify-end w-4/5 mx-auto"
-          >
-            <div className="overflow-y-auto">
-              {currChat.convo.map((chat) => (
-                <>
-                  <li className="flex w-full justify-between gap-x-6 mt-5 py-5 px-4 rounded-lg bg-gray-700">
-                    {chat.input}
-                  </li>
-                  <li className="flex w-full flex-row items-center justify-center gap-x-6 mt-5 py-5 px-4 rounded-lg bg-gray-600">
-                    <img
-                      className="w-60 h-auto"
-                      src={chat.response}
-                      alt="image"
-                    />
-                    <button
-                      type="button"
-                      className="w-fit inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-2xl font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                      Virtual try-on
-                    </button>
-                  </li>
-                </>
-              ))}
-            </div>
-          </ul>
-        </div>
-
-        {/* CHATBOX */}
-        <div className="flex h-20 w-full justify-around">
-          <form onSubmit={handleSubmit} className="w-4/5 flex">
-            <input
-              id="chatbox"
-              value={newInput}
-              onChange={(e) => setNewInput(e.target.value)}
-              name="chatbox"
-              type="text"
-              className="block w-full rounded-md border-0 px-4 py-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-3xl sm:leading-6"
-            />
-            <button
-              type="submit"
-              className="flex w-20 ml-4 items-center justify-center rounded-full bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              +
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
+      </AppShell>
+    </>
   );
 }
