@@ -7,7 +7,7 @@ const ThemeWrapper = ({ children }) => {
       <div id="stars"></div>
       <div id="stars2"></div>
       <div id="stars3"></div>
-      <div className="h-screen" id="title">
+      <div className="h-screen" id="title" >
         {children}
       </div>
     </div>

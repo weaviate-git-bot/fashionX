@@ -43,20 +43,11 @@ export function Heropage() {
                 zIndex: 10,
               }}
             >
-              <h2 style={{ textAlign: "center" }}>FASHION-X</h2>
-              <h3 style={{ textAlign: "center" }}>
+              <h2 style={{ textAlign: "center", fontWeight: 600 }}>FASHION-X</h2>
+              <h3 style={{ textAlign: "center", opacity: 0.6 }}>
                 THE AI OF FASHION
               </h3>
-              <Button
-                variant="primary"
-                style={{
-                  fontSize: "2.875rem",
-                  cursor: "pointer",
-                  textAlign: "center",
-                }}
-              >
-                GET STARTED
-              </Button>
+
             </div>
 
             <div className="ellipses ellipses__outer--thin">

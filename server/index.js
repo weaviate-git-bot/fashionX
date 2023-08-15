@@ -7,6 +7,8 @@ import cors from "cors"
 import bodyParser from "body-parser"
 import axios from 'axios';
 import { db } from "./firebase.js"
+import pbkdf2 from 'pbkdf2';
+
 
 
 
@@ -18,7 +20,7 @@ const { SCHEMA_CREATED, IMAGES_LOADED } = process.env;
 
 const client = weaviate.client({
     scheme: 'http',
-    host: 'localhost:8080',
+    host: 'localhost:8081',
 })
 
 const schemaConfig = {
@@ -45,10 +47,7 @@ const schemaConfig = {
 }
 
 async function createSchema() {
-    if (SCHEMA_CREATED) {
-        console.log('Schema already created');
-        return;
-    }
+
 
     const schemaRes = await client
         .schema
@@ -60,6 +59,7 @@ async function createSchema() {
 }
 
 
+
 const app = express();
 app.use(cors({
     origin: "*",
@@ -67,9 +67,6 @@ app.use(cors({
 }))
 app.use(bodyParser.json({ limit: "50mb" }))
 
-app.get('/test', (req, res) => { res.send('Hello World!') })
-
-// @TODO Change it after the frontend is ready
 
 
 app.get("/frontpage/:count", async (req, res) => {
@@ -100,12 +97,13 @@ async function getRelatedProducts(base64Image, cnt) {
 
     for (let i = 0; i < resImage.data.Get.FashionY.length; i++) {
         const productID = resImage.data.Get.FashionY[i].product_id
-        console.log(productID)
         const productData = await db.collection("metadata").where("productID", "==", productID).get()
         const product = productData.docs[0].data()
         products.push(product)
 
     }
+
+    return products
 
 }
 
@@ -121,9 +119,9 @@ app.post("/related-products/:cnt", async (req, res) => {
     const { image_url } = req.body
     const base64Image = await convertImageToBase64(image_url)
 
-    products = await getRelatedProducts(base64Image, cnt)
+    const products = await getRelatedProducts(base64Image, cnt)
 
-    res.send(products)
+    res.send(products.slice(1))
 
 
 })
@@ -131,12 +129,65 @@ app.post("/related-products/:cnt", async (req, res) => {
 app.get("/product/:productID", async (req, res) => {
     const { productID } = req.params
     const productData = await db.collection("metadata").where("productID", "==", productID).get()
-    console.log(productData.docs[0].data())
     const product = productData.docs[0].data()
     res.send(product)
 })
 
+function getAuthenticationHeader(public_key, secret_key) {
 
+    let time = parseInt(Date.now() / 1000);
+    var derivedKey = pbkdf2.pbkdf2Sync(secret_key, time.toString(), 128, 32, 'sha256');
+    derivedKey = derivedKey.toString('hex');
+
+    return {
+        "public_key": public_key,
+        "one_time_code": derivedKey,
+        "timestamp": time,
+    }
+}
+
+app.get("/models", async (req, res) => {
+    const headers = getAuthenticationHeader("46933177823fe9817e394f404b278836", "3f37d756fa4fed2b5694e673ce422cee")
+    const { data } = await axios.get("https://api.revery.ai/console/v1/get_model_list", {
+        headers
+    })
+
+    const models = []
+
+    for (let i = 0; i < data.model_files.length; i++) {
+        models.push({
+            url: `https://media.revery.ai/generated_model_image/${data.model_files[i]}.png`,
+            model_id: data.models[i]
+        })
+    }
+
+    res.send(models)
+})
+
+app.post("/virtual-try-on", async (req, res) => {
+    const { imageURL, modelID } = req.body
+    const headers = getAuthenticationHeader("46933177823fe9817e394f404b278836", "3f37d756fa4fed2b5694e673ce422cee")
+
+    const { data } = await axios.post("https://api.revery.ai/console/v1/process_new_garment", {
+        "category": "tops",
+        "gender": "male",
+        "garment_img_url": imageURL
+    }, { headers })
+
+
+    const resp = await axios.post("https://api.revery.ai/console/v1/request_tryon",
+        {
+            "garments": {
+                "tops": data.garment_id,
+                "bottoms": "46933177823fe9817e394f404b278836_T1t5aLqZHK7q"
+            },
+            "model_id": modelID,
+            "background": "studio"
+        }, { headers })
+
+    res.send(`https://media.revery.ai/generated_model_image/${resp.data.model_metadata.model_file}.png`)
+
+})
 
 
 app.post("/prompt", async (req, res) => {
@@ -193,13 +244,13 @@ async function loadImages() {
     })
 }
 
-createSchema()
-    .then(() => {
-        console.log('Schema created');
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+// createSchema()
+//     .then(() => {
+//         console.log('Schema created');
+//     })
+//     .catch((err) => {
+//         console.log(err);
+//     });
 
 
 const temp = async () => {
@@ -228,7 +279,8 @@ const temp = async () => {
     })
 }
 
-// loadImages()
+
+
 // temp()
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 

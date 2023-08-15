@@ -2,19 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  /* background: radial-gradient(
-    ellipse at bottom,
-    #1b2735 0%,
-    #090a0f 100%
-  ); */
-  /* overflow: hidden; */
-}
 
 @keyframes slide {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-100%);
   }
@@ -28,12 +21,13 @@ html {
   width: 300px;
   height: 200px;
 }
+
 .fixed-size-button {
   width: 100px;
   height: 40px;
 }
 
-.mark{
+.mark {
   @apply border-[1px] border-red-500
 }
 
@@ -277,6 +271,7 @@ html {
     251px 1449px #fff;
   animation: animStar 50s linear infinite;
 }
+
 #stars:after {
   content: " ";
   position: absolute;
@@ -593,6 +588,7 @@ html {
     146px 403px #fff, 256px 407px #fff;
   animation: animStar 100s linear infinite;
 }
+
 #stars2:after {
   content: " ";
   position: absolute;
@@ -709,6 +705,7 @@ html {
     1530px 210px #fff;
   animation: animStar 150s linear infinite;
 }
+
 #stars3:after {
   content: " ";
   position: absolute;
@@ -759,16 +756,19 @@ html {
   color: #fff;
   font-family: "lato", sans-serif;
 }
+
 #title span {
-  background: -webkit-linear-gradient(white, #38495a);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #fff !important;
+  /* background: -webkit-linear-gradient(white, #38495a); */
+  /* -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; */
 }
 
 @keyframes animStar {
   from {
     transform: translateY(0px);
   }
+
   to {
     transform: translateY(-2000px);
   }
@@ -838,6 +838,7 @@ h1 {
   background-color: white;
   display: block;
 }
+
 .menu-icon__line:before,
 .menu-icon__line:after {
   content: "";
@@ -847,10 +848,12 @@ h1 {
   display: inline-block;
   position: relative;
 }
+
 .menu-icon__line:before {
   left: 0.5rem;
   top: -0.6rem;
 }
+
 .menu-icon__line:after {
   top: -1.8rem;
 }
@@ -873,22 +876,28 @@ h1 {
   margin: 0;
   float: right;
 }
+
 .social-container .social__icon {
   float: left;
   cursor: pointer;
 }
+
 .social-container .social__icon.social__icon--dr {
   margin-left: 0.5rem;
 }
+
 .social-container .social__icon.social__icon--dr img {
   height: 2rem;
 }
+
 .social-container .social__icon.social__icon--in {
   margin-left: 0.75rem;
 }
+
 .social-container .social__icon.social__icon--in img {
   height: 2rem;
 }
+
 .social-container .social__icon.social__icon--fb img {
   height: 2rem;
   margin: 0rem;
@@ -906,6 +915,8 @@ h1 {
   margin: 0;
 }
 
+
+
 .ellipses-container {
   width: 50rem;
   height: 50rem;
@@ -914,6 +925,7 @@ h1 {
   position: relative;
   top: 10.5rem;
 }
+
 .ellipses-container .greeting {
   position: absolute;
   top: 11.6rem;
@@ -924,8 +936,9 @@ h1 {
   letter-spacing: 2rem;
   font-size: 2.2rem;
   font-weight: 400;
-  opacity: 0.5;
+  /* opacity: 0.5; */
 }
+
 .ellipses-container .greeting:after {
   content: "";
   width: 0.3rem;
@@ -953,6 +966,7 @@ h1 {
   -webkit-animation: ellipsesOrbit 15s ease-in-out infinite;
   animation: ellipsesOrbit 15s ease-in-out infinite;
 }
+
 .ellipses__outer--thin:after {
   content: "";
   background-image: url("https://s29.postimg.org/5h0r4ftkn/ellipses_dial.png");
@@ -984,6 +998,7 @@ h1 {
   top: 5rem;
   right: 6.75rem;
 }
+
 .ellipses__orbit:before {
   content: "";
   width: 0.7rem;
@@ -1008,6 +1023,7 @@ h1 {
   transform: translateY(50%);
   overflow: hidden;
 }
+
 .scroller .page-title {
   font-family: "Playfair Display", serif;
   letter-spacing: 0.5rem;
@@ -1015,12 +1031,14 @@ h1 {
   float: left;
   margin-top: 1rem;
 }
+
 .scroller .timeline {
   width: 1.5rem;
   height: 9rem;
   display: inline-block;
   float: right;
 }
+
 .scroller .timeline .timeline__unit {
   width: 100%;
   height: 0.1rem;
@@ -1029,12 +1047,15 @@ h1 {
   margin: 0 0 2rem;
   opacity: 0.2;
 }
+
 .scroller .timeline .timeline__unit.timeline__unit--active {
   opacity: 1;
 }
+
 .scroller .timeline .timeline__unit.timeline__unit--active:after {
   opacity: 0.2;
 }
+
 .scroller .timeline .timeline__unit:after {
   content: "";
   width: 70%;
@@ -1050,6 +1071,7 @@ h1 {
   0% {
     transform: rotate(-45deg);
   }
+
   100% {
     transform: rotate(-405deg);
   }
@@ -1059,22 +1081,27 @@ h1 {
   0% {
     transform: rotate(-45deg);
   }
+
   100% {
     transform: rotate(-405deg);
   }
 }
+
 @-webkit-keyframes ellipsesOrbit {
   0% {
     transform: rotate(0);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
+
 @keyframes ellipsesOrbit {
   0% {
     transform: rotate(0);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -1103,3 +1130,8 @@ body {
     )
     rgb(var(--background-start-rgb));
 } */
+
+
+.heading {
+  color: white !important;
+}

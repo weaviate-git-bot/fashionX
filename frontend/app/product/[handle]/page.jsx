@@ -9,106 +9,10 @@ import { useDisclosure } from "@mantine/hooks";
 import { Modal } from "@mantine/core";
 import TransformModal from '../../../components/TransformModal'
 
-// import GridTileImage from "../components/grid/tile";
-// import Footer from "../components/layout/Footer";
-
-// import { Gallery } from "components/product/gallery";
-// import ProductDescription from "../components/product/product-description";
-// import { HIDDEN_PRODUCT_TAG } from "lib/constants";
-// import { getProduct, getProductRecommendations } from "lib/shopify";
-// import { Image } from "lib/shopify/types";
 import Link from "next/link";
 
 export const runtime = "edge";
 
-// export function generateMetadata({ params }) {
-//   //   const product = await getProduct(params.handle);
-//   const [item, setItem] = useState({});
-//   console.log(params.handle);
-//   useEffect(() => {
-//     axios
-//       .get("http://localhost:8080/product/params.handle")
-//       .then((res) => {
-//         setItem(res.data);
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   }, []);
-
-//   console.log(item);
-//   const product = {
-//     title: "Product Title",
-//     description: "Product Description",
-//     featuredImage: {
-//       url: "https://clipart-library.com/images_k/t-shirt-transparent/t-shirt-transparent-15.jpg",
-//       width: 100,
-//       height: 100,
-//       altText: "Product Image",
-//     },
-//     seo: {
-//       title: "Product Title",
-//       description: "Product Description",
-//     },
-//     availableForSale: true,
-//     priceRange: {
-//       minVariantPrice: {
-//         currencyCode: "USD",
-//         amount: 100,
-//       },
-//       maxVariantPrice: {
-//         currencyCode: "USD",
-//         amount: 100,
-//       },
-//     },
-//     images: [
-//       {
-//         url: "https://clipart-library.com/images_k/t-shirt-transparent/t-shirt-transparent-15.jpg",
-//         width: 100,
-//         height: 100,
-//         altText: "Product Image",
-//       },
-//     ],
-//     handle: "product-handle",
-//     id: "product-id",
-//     tags: ["tag1", "tag2"],
-//   };
-
-//   if (!product) return notFound();
-
-//   const {
-//     url,
-//     width,
-//     height,
-//     altText: alt,
-//   } = product.featuredImage || {};
-//   //   const indexable = !product.tags.includes(HIDDEN_PRODUCT_TAG);
-
-//   return {
-//     title: product.seo.title || product.title,
-//     description: product.seo.description || product.description,
-//     // robots: {
-//     //   index: indexable,
-//     //   follow: indexable,
-//     //   googleBot: {
-//     //     index: indexable,
-//     //     follow: indexable,
-//     //   },
-//     // },
-//     openGraph: url
-//       ? {
-//           images: [
-//             {
-//               url,
-//               width,
-//               height,
-//               alt,
-//             },
-//           ],
-//         }
-//       : null,
-//   };
-// }
 
 export default function ProductPage({ params }) {
   const [item, setItem] = useState({});
@@ -128,7 +32,6 @@ export default function ProductPage({ params }) {
     return <div>loading...</div>;
   }
 
-  console.log(item.data, typeof item.data);
   const product = {
     title: item.data.productDisplayName,
     description: item.data["productDescriptors"].description.value,
@@ -186,6 +89,9 @@ export default function ProductPage({ params }) {
       lowPrice: product.priceRange.minVariantPrice.amount,
     },
   };
+
+
+
   return (
     <>
       <Modal
@@ -195,7 +101,7 @@ export default function ProductPage({ params }) {
         centered
         size="70%"
       >
-        <TransformModal clothImageUrl={product.images[0].url}/> 
+        <TransformModal clothImageUrl={product.images[0].url} />
       </Modal>
       <script
         type="application/ld+json"
@@ -230,7 +136,7 @@ export default function ProductPage({ params }) {
           </div>
         </div>
         <Suspense>
-          <RelatedProducts id={product.featuredImage.url} />
+          <RelatedProducts imageURL={product.images[0].url} />
         </Suspense>
       </div>
       <Suspense>{/* <Footer /> */}</Suspense>
@@ -239,69 +145,21 @@ export default function ProductPage({ params }) {
 }
 
 function RelatedProducts({ imageURL }) {
-  const [base64Image, setBase64Image] = useState("");
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
-  const convertToBase64 = async () => {
-    try {
-      const response = await fetch(imageURL);
-      const blob = await response.blob();
-      const base64 = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          resolve(reader.result);
-        };
-        reader.readAsDataURL(blob);
-      });
-      setBase64Image(base64);
-      // console.log(base64);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  useEffect(() => {
+    console.log(imageURL)
+    axios.post("http://localhost:8080/related-products/5", { image_url: imageURL })
+      .then(({ data }) => setRelatedProducts(data.map((item) => item.data)))
+      .catch((err) => console.log(err))
+  }, []);
 
-  convertToBase64();
-  const base64Data = base64Image.split(",")[1];
 
-  const relatedProducts = [
-    {
-      title: "Product Title",
-      description: "Product Description",
-      featuredImage: {
-        url: "https://clipart-library.com/images_k/t-shirt-transparent/t-shirt-transparent-15.jpg",
-        width: 100,
-        height: 100,
-        altText: "Product Image",
-      },
-      seo: {
-        title: "Product Title",
-        description: "Product Description",
-      },
-      availableForSale: true,
-      priceRange: {
-        minVariantPrice: {
-          currencyCode: "USD",
-          amount: 100,
-        },
-        maxVariantPrice: {
-          currencyCode: "USD",
-          amount: 100,
-        },
-      },
-      images: [
-        {
-          url: "https://clipart-library.com/images_k/t-shirt-transparent/t-shirt-transparent-15.jpg",
-          width: 100,
-          height: 100,
-          altText: "Product Image",
-        },
-      ],
-      handle: "product-handle",
-      id: "product-id",
-      tags: ["tag1", "tag2"],
-    },
-  ];
+
+
 
   if (!relatedProducts.length) return null;
+
 
   return (
     <div className="py-8">
@@ -309,23 +167,23 @@ function RelatedProducts({ imageURL }) {
       <ul className="flex w-full gap-4 overflow-x-auto pt-1">
         {relatedProducts.map((product) => (
           <li
-            key={product.handle}
+            key={product.id}
             className="aspect-square w-full flex-none min-[475px]:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5"
           >
             <Link
               className="relative h-full w-full"
-              href={`/product/${product.handle}`}
+              href={`/product/${product.id}`}
             >
               <GridTileImage
                 alt={product.title}
                 active={false}
                 label={{
                   title: product.title,
-                  amount: product.priceRange.maxVariantPrice.amount,
+                  amount: product.discountedPrice,
                   currencyCode:
-                    product.priceRange.maxVariantPrice.currencyCode,
+                    "INR",
                 }}
-                src={product.featuredImage?.url}
+                src={product.styleImages.default.imageURL}
                 fill
                 sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
               />
