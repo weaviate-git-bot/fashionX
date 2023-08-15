@@ -25,7 +25,8 @@
     "**/*.ts",
     "**/*.tsx",
     "components/Prose.jsx",
-    "app/product/[handle]/page.jsx"
+    "app/product/[handle]/page.jsx",
+    "app/chat/page.jsx"
   ],
   "exclude": ["node_modules"]
 }

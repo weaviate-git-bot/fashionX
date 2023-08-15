@@ -191,27 +191,27 @@ app.post("/virtual-try-on", async (req, res) => {
 
 
 app.post("/prompt", async (req, res) => {
-    const prompt = {
-        "prompt": req.body.prompt,
-        "n": 1,
-        "size": "1024x1024"
-    }
+    // const prompt = {
+    //     "prompt": req.body.prompt,
+    //     "n": 1,
+    //     "size": "1024x1024"
+    // }
 
-    const { data } = await axios.post("https://api.openai.com/v1/images/generations", prompt, {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
-        }
-    })
+    // const { data } = await axios.post("https://api.openai.com/v1/images/generations", prompt, {
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+    //     }
+    // })
 
-    const imageUrl = data.data[0].url
-    const base64Image = await convertImageToBase64(imageUrl)
+    // const imageUrl = data.data[0].url
+    // const base64Image = await convertImageToBase64(imageUrl)
 
-    const relatedProducts = await getRelatedProducts(base64Image, 3)
+    // const relatedProducts = await getRelatedProducts(base64Image, 3)
 
     res.send({
-        "image_url ": imageUrl,
-        "related_products": relatedProducts
+        "image_url": "https://www.nicepng.com/png/detail/802-8027356_fashion-clipart-fashion-icon-fashion-icon-png.png",
+        // "related_products": relatedProducts
     })
 
 })

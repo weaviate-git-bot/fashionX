@@ -6,15 +6,17 @@ import { ProductDescription } from "../../../components";
 import { GridTileImage } from "../../../components/grid/tile";
 import { Gallery } from "../../../components/product/gallery";
 import { useDisclosure } from "@mantine/hooks";
-import { Modal } from "@mantine/core";
-import TransformModal from '../../../components/TransformModal'
+import { Modal, Skeleton } from "@mantine/core";
+import TransformModal from "../../../components/TransformModal";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../../firebase";
 
 import Link from "next/link";
 
 export const runtime = "edge";
 
-
 export default function ProductPage({ params }) {
+  const [user] = useAuthState(auth);
   const [item, setItem] = useState({});
   const [opened, { open, close }] = useDisclosure(false);
   useEffect(() => {
@@ -71,7 +73,7 @@ export default function ProductPage({ params }) {
     tags: ["tag1", "tag2"],
   };
 
-  // if (!product) return notFound();
+  if (!product) return <Skeleton height={50} />;
 
   const productJsonLd = {
     "@context": "https://schema.org",
@@ -90,8 +92,6 @@ export default function ProductPage({ params }) {
     },
   };
 
-
-
   return (
     <>
       <Modal
@@ -109,6 +109,7 @@ export default function ProductPage({ params }) {
           __html: JSON.stringify(productJsonLd),
         }}
       />
+
       <div className="mx-auto max-w-screen-2xl px-4">
         <div
           className="flex flex-col    md:p-12 lg:flex-row lg:gap-8"
@@ -125,21 +126,22 @@ export default function ProductPage({ params }) {
             />
           </div>
 
-          <div className="basis-full lg:basis-2/6 border  border-neutral-200 dark:border-neutral-800 rounded-lg bg-transparent backdrop-filter p-8 backdrop-blur-sm">
-            <ProductDescription product={product} />
-            <button
-              onClick={open}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-5 px-5 rounded-lg w-100"
-            >
-              Virtual Try On
-            </button>
-          </div>
+          {user && (
+            <div className="basis-full lg:basis-2/6 border  border-neutral-200 dark:border-neutral-800 rounded-lg bg-transparent backdrop-filter p-8 backdrop-blur-sm">
+              <ProductDescription product={product} />
+              <button
+                onClick={open}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-5 px-5 rounded-lg w-100"
+              >
+                Virtual Try On
+              </button>
+            </div>
+          )}
         </div>
         <Suspense>
           <RelatedProducts imageURL={product.images[0].url} />
         </Suspense>
       </div>
-      <Suspense>{/* <Footer /> */}</Suspense>
     </>
   );
 }
@@ -148,18 +150,18 @@ function RelatedProducts({ imageURL }) {
   const [relatedProducts, setRelatedProducts] = useState([]);
 
   useEffect(() => {
-    console.log(imageURL)
-    axios.post("http://localhost:8080/related-products/5", { image_url: imageURL })
-      .then(({ data }) => setRelatedProducts(data.map((item) => item.data)))
-      .catch((err) => console.log(err))
+    console.log(imageURL);
+    axios
+      .post("http://localhost:8080/related-products/5", {
+        image_url: imageURL,
+      })
+      .then(({ data }) =>
+        setRelatedProducts(data.map((item) => item.data))
+      )
+      .catch((err) => console.log(err));
   }, []);
 
-
-
-
-
   if (!relatedProducts.length) return null;
-
 
   return (
     <div className="py-8">
@@ -180,8 +182,7 @@ function RelatedProducts({ imageURL }) {
                 label={{
                   title: product.title,
                   amount: product.discountedPrice,
-                  currencyCode:
-                    "INR",
+                  currencyCode: "INR",
                 }}
                 src={product.styleImages.default.imageURL}
                 fill

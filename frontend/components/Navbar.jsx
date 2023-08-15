@@ -2,6 +2,7 @@
 import { AppShell, Navbar, Header } from "@mantine/core";
 
 import NavbarComponents from "./NavbarComponents";
+import { auth, provider } from "../firebase";
 
 const NavbarComponent = ({ children }) => {
   return (
@@ -15,7 +16,7 @@ const NavbarComponent = ({ children }) => {
           className="flex justify-between items-center pl-5 pr-5"
         >
           {/* Header content */}
-          <NavbarComponents />
+          <NavbarComponents auth={auth} provider={provider} />
         </Header>
       }
       styles={(theme) => ({

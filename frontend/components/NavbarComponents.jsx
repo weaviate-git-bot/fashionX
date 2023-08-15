@@ -3,6 +3,8 @@ import {
   IconShoppingCart,
   IconSearch,
   IconPlus,
+  IconBrandGoogle,
+  IconWand,
 } from "@tabler/icons-react";
 import {
   useMantineColorScheme,
@@ -10,28 +12,46 @@ import {
   Group,
   TextInput,
   Modal,
+  Avatar,
+  Tooltip,
 } from "@mantine/core";
 import Image from "next/image";
 import Link from "next/link";
 import { useDisclosure } from "@mantine/hooks";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-const HeaderComponets = () => {
+const HeaderComponets = ({ auth, provider }) => {
   const [opened, { open, close }] = useDisclosure(false);
+
+  const signIn = async (e) => {
+    e.preventDefault();
+    await auth
+      .signInWithPopup(provider)
+      .catch((error) => alert(error.message))
+      .then(() => {
+        const user = auth.currentUser;
+        console.log(user);
+      });
+  };
+
+  const [user, loading] = useAuthState(auth);
+
   return (
     <>
       <Modal
         opened={opened}
         onClose={close}
-        title="Customize your product"
         centered
-        size="lg"
+        // size="lg"
         transitionProps={{
           transition: "fade",
           duration: 600,
           timingFunction: "linear",
         }}
+        style={{ height: "200px" }}
       >
         {/* Modal content */}
+        <h2 style={{ fontSize: "24px" }}>Customize your product</h2>
         <div
           style={{
             display: "flex",
@@ -39,20 +59,11 @@ const HeaderComponets = () => {
             alignItems: "center",
           }}
         >
-          <img
-            width="100"
-            height="100"
-            src="https://img.icons8.com/emoji/48/magic-wand.png"
-            alt="magic-wand"
-            className="hover:border-cyan-500"
-            style={{
-              border:
-                "1px solid rgb(38 38 38 / var(--tw-border-opacity))",
-              padding: "12px",
-              borderRadius: "10px",
-              cursor: "pointer",
-            }}
-          />
+          <Link href="/chat" onClick={close}>
+            <ActionIcon style={{ height: "400px", width: "400px" }}>
+              <IconWand size="5rem" />
+            </ActionIcon>
+          </Link>
         </div>
       </Modal>
       <div className="flex items-center cursor-pointer">
@@ -78,14 +89,34 @@ const HeaderComponets = () => {
           style={{ borderRadius: "50%" }}
         />
       </Group>
-      <Group>
-        <ActionIcon onClick={open}>
-          <IconPlus size="2rem" stroke={1.5} />
-        </ActionIcon>
+      <Group style={{ marginRight: "10px" }}>
+        <Tooltip label="Customize">
+          <ActionIcon onClick={open}>
+            <IconPlus size="2rem" stroke={1.5} />
+          </ActionIcon>
+        </Tooltip>
 
-        <Group spacing={7}>
+        <Group spacing={9}>
           <IconShoppingCart size="2rem" stroke={1.5} />
         </Group>
+        {user ? (
+          <Tooltip label="Logout">
+            <ActionIcon
+              onClick={() => {
+                auth.signOut();
+              }}
+            >
+              <Avatar
+                src={user?.photoURL}
+                alt={user?.displayName || "user logo"}
+              />
+            </ActionIcon>
+          </Tooltip>
+        ) : (
+          <ActionIcon onClick={signIn}>
+            <IconBrandGoogle size="2rem" stroke={1.5} />
+          </ActionIcon>
+        )}
       </Group>
     </>
   );
