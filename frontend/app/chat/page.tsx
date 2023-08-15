@@ -23,26 +23,51 @@ export default function Chat() {
     console.log(currChat);
   };
 
+  const [currQuestion , setCurrQuestion] = useState('')
+  const [loading , setLoading] =  useState(false)
+  function addToChats(text , type){
+    const c = chats 
+    c.push({text  , type })
+    setChats(c)
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
-    showCurrChat({
-      ...currChat,
-      convo: [
-        ...currChat.convo,
-        {
-          input: newInput,
-          response: "typing...|",
-        },
-      ],
-    });
-    if (isNewchat) {
-      prevChats.unshift(currChat);
-    } else {
-      const arrIndex = prevChats.findIndex(
-        (obj) => obj.name == currChat.name
-      );
-      prevChats[arrIndex] = currChat;
-    }
+    // showCurrChat({
+    //   ...currChat,
+    //   convo: [
+    //     ...currChat.convo,
+    //     {
+    //       input: newInput,
+    //       response: "typing...|",
+    //     },
+    //   ],
+    // });
+    // if (isNewchat) {
+    //   prevChats.unshift(currChat);
+    // } else {
+    //   const arrIndex = prevChats.findIndex(
+    //     (obj) => obj.name == currChat.name
+    //   );
+    //   prevChats[arrIndex] = currChat;
+    // }
+    if(currQuestion === '')return
+    
+    addToChats(currQuestion , 'q')
+    setCurrQuestion('Fetching response ....')
+    setLoading(true)
+    
+    // API call to send question to backend
+
+
+    // Receiving answer from backend
+    
+    setTimeout(()=>{
+      const resp = "This is the response from backend"
+      addToChats(resp , 'a')
+      setLoading(false)
+      setCurrQuestion('')
+    } , 1000)
+
   };
 
   const [newInput, setNewInput] = useState("");
@@ -52,10 +77,12 @@ export default function Chat() {
     convo: [],
   });
 
+  const [chats , setChats] = useState([])
+
   return (
     <>
       <AppShell
-        style={{ height: "85%", width: "80%" }}
+        style={{ height: "85%", width: "75%" , overflow:"hidden" , border : "1px solid red"  , flexGrow : "intial" }}
         padding="md"
         navbar={
           <Navbar width={{ base: 300 }} p="xs">
@@ -85,7 +112,14 @@ export default function Chat() {
           </Navbar>
         }
       >
-        <div className="">
+        <div className="w-[100%] h-[100%] mark ">
+          <div className="w-[100%] h-full mark overflow-y-scroll ">
+              {chats.map(c => (
+                <div className={`p-[10px] text-[1.2rem] text-[#D1D5DB] ${c.type==='q' ? 'bg-[#343541]' : 'bg-[#444654]'}`}>
+                  {c.text}
+                </div>
+              ))}
+          </div>
           <div
             className=""
             style={{
@@ -100,6 +134,9 @@ export default function Chat() {
                 placeholder="Your twitter"
                 size="xl"
                 style={{ width: "100%" }}
+                onChange={(event) => setCurrQuestion(event.target.value)}
+                value = {currQuestion}
+                disabled={loading}
                 rightSection={
                   <ActionIcon
                     color="primary"
