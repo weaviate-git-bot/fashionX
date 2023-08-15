@@ -12,19 +12,11 @@ const font = Nunito({ subsets: ["latin"] });
 function ThemeProvider({ children }) {
   const [colorScheme, setColorScheme] = useLocalStorage(
     "color-scheme",
-    "dark"
+    "#1A1B1E"
   );
 
-  const toggleColorScheme = () =>
-    setColorScheme((current) =>
-      current === "dark" ? "light" : "dark"
-    );
-
   return (
-    <ColorSchemeProvider
-      colorScheme={colorScheme}
-      toggleColorScheme={toggleColorScheme}
-    >
+    <ColorSchemeProvider colorScheme={colorScheme}>
       <MantineProvider
         theme={{ colorScheme }}
         withGlobalStyles

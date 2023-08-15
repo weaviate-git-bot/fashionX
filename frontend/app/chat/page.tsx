@@ -55,7 +55,7 @@ export default function Chat() {
   return (
     <>
       <AppShell
-        style={{ height: "100vh" }}
+        style={{ height: "85%", width: "80%" }}
         padding="md"
         navbar={
           <Navbar width={{ base: 300 }} p="xs">
@@ -85,16 +85,13 @@ export default function Chat() {
           </Navbar>
         }
       >
-        <div
-          className=""
-          style={{ height: "100vh", position: "relative" }}
-        >
+        <div className="">
           <div
             className=""
             style={{
               position: "absolute",
-              bottom: 110,
-              left: 200,
+              bottom: 220,
+              left: 150,
               minWidth: "60%",
             }}
           >

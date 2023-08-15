@@ -16,18 +16,19 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+
       <ThemeProvider>
+
+
         <Navbar>
           <ThemeWrapper>
-
-
             {children}
-
-
             <Footer />
           </ThemeWrapper>
         </Navbar >
+
       </ThemeProvider>
+
     </html >
   )
 }

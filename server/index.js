@@ -84,26 +84,26 @@ app.get("/frontpage/:count", async (req, res) => {
 })
 
 async function getRelatedProducts(base64Image, cnt) {
-    const resImage = await client
-        .graphql
-        .get()
-        .withClassName("FashionY")
-        .withFields(['image', 'product_id'])
-        .withNearImage({ image: String(base64Image) })
-        .withLimit(cnt)
-        .do()
+    // const resImage = await client
+    //     .graphql
+    //     .get()
+    //     .withClassName("FashionY")
+    //     .withFields(['image', 'product_id'])
+    //     .withNearImage({ image: String(base64Image) })
+    //     .withLimit(cnt)
+    //     .do()
 
-    const products = []
+    // const products = []
 
-    for (let i = 0; i < resImage.data.Get.FashionY.length; i++) {
-        const productID = resImage.data.Get.FashionY[i].product_id
-        const productData = await db.collection("metadata").where("productID", "==", productID).get()
-        const product = productData.docs[0].data()
-        products.push(product)
+    // for (let i = 0; i < resImage.data.Get.FashionY.length; i++) {
+    //     const productID = resImage.data.Get.FashionY[i].product_id
+    //     const productData = await db.collection("metadata").where("productID", "==", productID).get()
+    //     const product = productData.docs[0].data()
+    //     products.push(product)
 
-    }
+    // }
 
-    return products
+    return [];
 
 }
 
