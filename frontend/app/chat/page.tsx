@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState , useRef  , useEffect} from "react";
 import prevChats from "./prev-chats/prevChats";
 import {
   Input,
@@ -25,11 +25,16 @@ export default function Chat() {
 
   const [currQuestion , setCurrQuestion] = useState('')
   const [loading , setLoading] =  useState(false)
+  const [chats , setChats] = useState([])
+
   function addToChats(text , type){
     const c = chats 
     c.push({text  , type })
     setChats(c)
+    chatsRef.current.scrollTop = chatsRef.current.scrollHeight;
   }
+  const chatsRef = useRef(null)
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     // showCurrChat({
@@ -77,12 +82,11 @@ export default function Chat() {
     convo: [],
   });
 
-  const [chats , setChats] = useState([])
-
+  
   return (
     <>
       <AppShell
-        style={{ height: "85%", width: "75%" , overflow:"hidden" , border : "1px solid red"  , flexGrow : "intial" }}
+        style={{ height: "85%", width: "75%" , overflow:"hidden" }}
         padding="md"
         navbar={
           <Navbar width={{ base: 300 }} p="xs">
@@ -112,24 +116,18 @@ export default function Chat() {
           </Navbar>
         }
       >
-        <div className="w-[100%] h-[100%] mark ">
-          <div className="w-[100%] h-full mark overflow-y-scroll ">
+        <div className="w-[75%] h-[75%]  left-0 absolute top-0">
+          <div className="w-[100%] h-full  overflow-y-scroll bg-[#363746] " ref={chatsRef}>
               {chats.map(c => (
-                <div className={`p-[10px] text-[1.2rem] text-[#D1D5DB] ${c.type==='q' ? 'bg-[#343541]' : 'bg-[#444654]'}`}>
+                <div className={`p-[10px] text-[1.2rem] text-[#D1D5DB]  ${c.type==='q' ? 'bg-[#363746]' : 'bg-[#2B2C39]'}`}>
                   {c.text}
                 </div>
               ))}
           </div>
           <div
-            className=""
-            style={{
-              position: "absolute",
-              bottom: 220,
-              left: 150,
-              minWidth: "60%",
-            }}
+            className="w-full flex justify-center items-center bg-[#363746]"
           >
-            <form onSubmit={handleSubmit} className="">
+            <form onSubmit={handleSubmit} className=" w-[80%]">
               <Input
                 placeholder="Your twitter"
                 size="xl"
@@ -138,12 +136,14 @@ export default function Chat() {
                 value = {currQuestion}
                 disabled={loading}
                 rightSection={
-                  <ActionIcon
+                  <button type="submit">
+                    <ActionIcon
                     color="primary"
                     style={{ marginBottom: "8px" }}
-                  >
-                    <IconArrowAutofitRight size="2rem" />
-                  </ActionIcon>
+                    >
+                      <IconArrowAutofitRight size="2rem" />
+                    </ActionIcon>
+                  </button>
                 }
               />
             </form>
