@@ -5,9 +5,14 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import cors from "cors"
 import bodyParser from "body-parser"
+import axios from 'axios';
 import { db } from "./firebase.js"
 
+
+
+
 dotenv.config();
+
 
 const { SCHEMA_CREATED, IMAGES_LOADED } = process.env;
 
@@ -66,36 +71,6 @@ app.get('/test', (req, res) => { res.send('Hello World!') })
 
 // @TODO Change it after the frontend is ready
 
-app.get('/api', async (req, res) => {
-    const test = Buffer.from(fs.readFileSync('./test/test.jpg')).toString('base64');
-
-    fs.writeFileSync('./test/test.txt', test);
-
-
-
-    const resImage = await client
-        .graphql
-        .get()
-        .withClassName("FashionY")
-        .withFields(['image'])
-        .withNearImage({ image: test })
-        .withLimit(2)
-        .do()
-
-
-
-    const res1 = resImage.data.Get.Fashion[0].image
-    const res2 = resImage.data.Get.Fashion[1].image
-
-    const res1Buffer = Buffer.from(res1, 'base64');
-    const res2Buffer = Buffer.from(res2, 'base64');
-
-    fs.writeFileSync('./test/res1.jpg', res1Buffer);
-    fs.writeFileSync('./test/res2.jpg', res2Buffer);
-
-    res.send({ "done": "done" })
-
-});
 
 app.get("/frontpage/:count", async (req, res) => {
     //get random images from the database
@@ -111,11 +86,7 @@ app.get("/frontpage/:count", async (req, res) => {
     res.send(randomImages)
 })
 
-app.post("/related-products/:cnt", async (req, res) => {
-    const { cnt } = req.params
-    const { base64Image } = req.body
-
-
+async function getRelatedProducts(base64Image, cnt) {
     const resImage = await client
         .graphql
         .get()
@@ -136,7 +107,25 @@ app.post("/related-products/:cnt", async (req, res) => {
 
     }
 
+}
+
+
+async function convertImageToBase64(imageUrl) {
+    let image = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    return Buffer.from(image.data).toString('base64');
+
+}
+
+app.post("/related-products/:cnt", async (req, res) => {
+    const { cnt } = req.params
+    const { image_url } = req.body
+    const base64Image = await convertImageToBase64(image_url)
+
+    products = await getRelatedProducts(base64Image, cnt)
+
     res.send(products)
+
+
 })
 
 app.get("/product/:productID", async (req, res) => {
@@ -146,6 +135,37 @@ app.get("/product/:productID", async (req, res) => {
     const product = productData.docs[0].data()
     res.send(product)
 })
+
+
+
+
+app.post("/prompt", async (req, res) => {
+    const prompt = {
+        "prompt": req.body.prompt,
+        "n": 1,
+        "size": "1024x1024"
+    }
+
+    const { data } = await axios.post("https://api.openai.com/v1/images/generations", prompt, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+        }
+    })
+
+    const imageUrl = data.data[0].url
+    const base64Image = await convertImageToBase64(imageUrl)
+
+    const relatedProducts = await getRelatedProducts(base64Image, 3)
+
+    res.send({
+        "image_url ": imageUrl,
+        "related_products": relatedProducts
+    })
+
+})
+
+
 
 
 const PORT = process.env.PORT || 8080;
