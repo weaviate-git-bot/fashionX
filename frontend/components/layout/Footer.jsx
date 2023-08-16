@@ -35,7 +35,7 @@ export function Footer() {
           <p className="md:ml-auto">
             Crafted by{" "}
             <a
-              href="https://vercel.com"
+              href="https://github.com/saswatsam786/fashionX"
               className="text-black dark:text-white"
             >
               {COMPANY_NAME || "Fashion-X Inc."}

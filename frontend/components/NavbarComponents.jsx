@@ -4,25 +4,20 @@ import {
   IconSearch,
   IconPlus,
   IconBrandGoogle,
-  IconWand,
 } from "@tabler/icons-react";
 import {
-  useMantineColorScheme,
   ActionIcon,
   Group,
   TextInput,
-  Modal,
   Avatar,
   Tooltip,
 } from "@mantine/core";
 import Image from "next/image";
 import Link from "next/link";
-import { useDisclosure } from "@mantine/hooks";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { toast } from "react-hot-toast";
 
 const HeaderComponets = ({ auth, provider, cartopen }) => {
-  const [opened, { open, close }] = useDisclosure(false);
-
   const signIn = async (e) => {
     e.preventDefault();
     await auth
@@ -31,6 +26,7 @@ const HeaderComponets = ({ auth, provider, cartopen }) => {
       .then(() => {
         const user = auth.currentUser;
         console.log(user);
+        toast.success("Login Successfully");
       });
   };
 
@@ -38,7 +34,6 @@ const HeaderComponets = ({ auth, provider, cartopen }) => {
 
   return (
     <>
-
       <div className="flex items-center cursor-pointer">
         <div>
           <Image
@@ -51,7 +46,9 @@ const HeaderComponets = ({ auth, provider, cartopen }) => {
         </div>
         <Link href="/">
           {" "}
-          <div className="text-3xl ml-5 font-bold mt-1">Fashion-X</div>
+          <div className="text-3xl ml-5 font-bold mt-1">
+            Fashion-X
+          </div>
         </Link>
       </div>
       <Group spacing={7}>
@@ -62,21 +59,38 @@ const HeaderComponets = ({ auth, provider, cartopen }) => {
           style={{ borderRadius: "50%" }}
         />
       </Group>
-      <Group style={{ marginRight: "10px" }}>
-        <Tooltip label="Customize">
-          <ActionIcon type="a" onClick={() => { window.location = "/chat" }}>
-            <IconPlus size="2rem" stroke={1.5} />
-          </ActionIcon>
-        </Tooltip>
 
-        <Group spacing={9}>
-          <IconShoppingCart onClick={cartopen} size="2rem" stroke={1.5} />
-        </Group>
+      <Group style={{ marginRight: "10px" }}>
+        {user && (
+          <>
+            {" "}
+            <Tooltip label="Customize">
+              <ActionIcon
+                type="a"
+                onClick={() => {
+                  window.location = "/chat";
+                }}
+              >
+                <IconPlus size="2rem" stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip label="Cart">
+              <Group spacing={9}>
+                <IconShoppingCart
+                  onClick={cartopen}
+                  size="2rem"
+                  stroke={1.5}
+                />
+              </Group>
+            </Tooltip>
+          </>
+        )}
         {user ? (
           <Tooltip label="Logout">
             <ActionIcon
               onClick={() => {
                 auth.signOut();
+                toast.success("Logout Successfully");
               }}
             >
               <Avatar
@@ -86,9 +100,11 @@ const HeaderComponets = ({ auth, provider, cartopen }) => {
             </ActionIcon>
           </Tooltip>
         ) : (
-          <ActionIcon onClick={signIn}>
-            <IconBrandGoogle size="2rem" stroke={1.5} />
-          </ActionIcon>
+          <Tooltip label="Log In">
+            <ActionIcon onClick={signIn}>
+              <IconBrandGoogle size="2rem" stroke={1.5} />
+            </ActionIcon>
+          </Tooltip>
         )}
       </Group>
     </>

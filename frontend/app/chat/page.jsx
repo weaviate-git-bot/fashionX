@@ -19,13 +19,9 @@ import { auth } from "../../firebase";
 import axios from "axios";
 import TransformModal from "../../components/TransformModal";
 import { randomUUID } from "crypto";
+import { toast } from "react-hot-toast";
 export default function Chat() {
   const [user] = useAuthState(auth);
-  const handleChange = (chat) => {
-    setChatStatus(false);
-    showCurrChat({ ...chat });
-    console.log(currChat);
-  };
 
   const [currQuestion, setCurrQuestion] = useState("");
   const [loading, setLoading] = useState(false);
@@ -44,10 +40,10 @@ export default function Chat() {
     const obj = {
       productID: Math.floor(Math.random() * 1000000),
       productImage: text,
-      productName: `[CUSTOM] ${chats[chats.length - 2].text}`,
+      productName: `[CUSTOM]: ${chats[chats.length - 2].text}`,
       type: "CUSTOM",
-      productPrice: 5000
-    }
+      productPrice: 5000,
+    };
     console.log(obj);
 
     let cart = JSON.parse(localStorage.getItem("cart"));
@@ -56,8 +52,7 @@ export default function Chat() {
     }
     cart.push(obj);
     localStorage.setItem("cart", JSON.stringify(cart));
-    alert("Added to cart");
-
+    toast.success("Added to cart");
   }
 
   const chatsRef = useRef(null);
@@ -98,9 +93,8 @@ export default function Chat() {
     "Sure thing! I'm fetching your designs as we speak.",
     "Not a problem! I'll have your designs for you in a moment.",
     "Sure, I'll make sure your designs are in your hands shortly.",
-    "Absolutely, I'm working on getting your designs right now."
+    "Absolutely, I'm working on getting your designs right now.",
   ];
-
 
   const [newInput, setNewInput] = useState("");
   const [isNewchat, setChatStatus] = useState(false);
@@ -121,29 +115,33 @@ export default function Chat() {
         <TransformModal clothImageUrl={virtualUrl} />
       </Modal>
       <AppShell
-        style={{ height: "100%", width: "85%", overflow: "hidden", margin: "auto" }}
+        style={{
+          height: "100%",
+          width: "85%",
+          overflow: "hidden",
+          margin: "auto",
+        }}
         padding="md"
       >
-        <div className="w-[100%] h-[75%]  ml-auto" >
+        <div className="w-[100%] h-[75%]  ml-auto">
           <div
             className="w-[100%] h-full  overflow-y-scroll bg-[#363746] "
             ref={chatsRef}
           >
             {user && (
               <div className="p-[20px] text-[1.2rem] text-[#D1D5DB] flex items-center gap-2 bg-[#363746]">
-                <IconGhost2Filled
-                  style={{ marginRight: "10px" }}
-                />
+                <IconGhost2Filled style={{ marginRight: "10px" }} />
                 <p style={{ marginLeft: "20px" }}>
-                  Hi {user.displayName}, I am Ghosty. How can I
-                  help you today?
+                  Hi {user.displayName}, I am Ghosty. How can I help
+                  you today?
                 </p>
               </div>
             )}
             {chats?.map((c, i) => (
               <div
-                className={`p-[20px] text-[1.2rem] text-[#D1D5DB] flex items-center gap-2  ${c.type === "q" ? "bg-[#363746]" : "bg-[#2B2C39]"
-                  }`}
+                className={`p-[20px] text-[1.2rem] text-[#D1D5DB] flex items-center gap-2  ${
+                  c.type === "q" ? "bg-[#363746]" : "bg-[#2B2C39]"
+                }`}
               >
                 {c.type === "q" ? (
                   <Avatar
@@ -152,12 +150,13 @@ export default function Chat() {
                   />
                 ) : (
                   <IconGhost2Filled
-                    style={{ marginRight: "10px", marginTop: "-12.5rem" }}
+                    style={{
+                      marginRight: "10px",
+                      marginTop: "-12.5rem",
+                    }}
                   />
                 )}{" "}
-
                 {c.type == "q" ? (
-
                   <p style={{ marginLeft: "20px" }}>{c.text} </p>
                 ) : (
                   <div
@@ -185,7 +184,9 @@ export default function Chat() {
                       </Button>
 
                       <Button
-                        onClick={() => addToLocalStorage(c.text)}
+                        onClick={() => {
+                          addToLocalStorage(c.text);
+                        }}
                         variant="outline"
                         size="md"
                         radius="md"
@@ -195,8 +196,6 @@ export default function Chat() {
                         Add to cart
                       </Button>
                     </div>
-
-
                   </div>
                 )}
               </div>
