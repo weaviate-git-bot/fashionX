@@ -1,3 +1,5 @@
+
+
 import './globals.css'
 import ThemeProvider from "../components/ThemeProvider"
 import ThemeWrapper from "../components/ThemeWrapper"
@@ -8,15 +10,16 @@ import { Footer } from "../components/layout/Footer"
 
 
 
+
 export const metadata = {
   title: 'FASHION - X',
   description: 'Supercharge your fashion store with AI',
 }
 
 export default function RootLayout({ children }) {
+
   return (
     <html lang="en">
-
       <ThemeProvider>
 
 

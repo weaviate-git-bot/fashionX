@@ -88,6 +88,20 @@ export default function Chat() {
     // }, 1000);
   };
 
+  const responses = [
+    "Sure! Fetching your designs in a second",
+    "Of course! Just a moment while I gather your designs.",
+    "Absolutely, I'll get your designs ready in no time.",
+    "Certainly! Your designs will be with you shortly.",
+    "No problem, I'm on it. Your designs are coming right up!",
+    "You got it! Give me a second to retrieve your designs.",
+    "Sure thing! I'm fetching your designs as we speak.",
+    "Not a problem! I'll have your designs for you in a moment.",
+    "Sure, I'll make sure your designs are in your hands shortly.",
+    "Absolutely, I'm working on getting your designs right now."
+  ];
+
+
   const [newInput, setNewInput] = useState("");
   const [isNewchat, setChatStatus] = useState(false);
   const [currChat, showCurrChat] = useState({
@@ -115,7 +129,18 @@ export default function Chat() {
             className="w-[100%] h-full  overflow-y-scroll bg-[#363746] "
             ref={chatsRef}
           >
-            {chats?.map((c) => (
+            {user && (
+              <div className="p-[20px] text-[1.2rem] text-[#D1D5DB] flex items-center gap-2 bg-[#363746]">
+                <IconGhost2Filled
+                  style={{ marginRight: "10px" }}
+                />
+                <p style={{ marginLeft: "20px" }}>
+                  Hi {user.displayName}, I am Ghosty. How can I
+                  help you today?
+                </p>
+              </div>
+            )}
+            {chats?.map((c, i) => (
               <div
                 className={`p-[20px] text-[1.2rem] text-[#D1D5DB] flex items-center gap-2  ${c.type === "q" ? "bg-[#363746]" : "bg-[#2B2C39]"
                   }`}
@@ -127,11 +152,13 @@ export default function Chat() {
                   />
                 ) : (
                   <IconGhost2Filled
-                    style={{ marginRight: "10px" }}
+                    style={{ marginRight: "10px", marginTop: "-12.5rem" }}
                   />
                 )}{" "}
+
                 {c.type == "q" ? (
-                  <p style={{ marginLeft: "20px" }}>{c.text}</p>
+
+                  <p style={{ marginLeft: "20px" }}>{c.text} </p>
                 ) : (
                   <div
                     style={{
@@ -141,7 +168,8 @@ export default function Chat() {
                       gap: 10,
                     }}
                   >
-                    <img height="150px" width="150px" src={c.text} style={{ marginLeft: "20px" }} />
+                    {`${responses[Math.floor(i % responses.length)]}`}
+                    <img height="150px" width="150px" src={c.text} />
                     <div style={{ display: "flex" }}>
                       <Button
                         onClick={() => {
