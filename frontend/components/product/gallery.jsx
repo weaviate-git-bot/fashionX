@@ -40,7 +40,7 @@ export function Gallery({ images }) {
   return (
     <>
       <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden">
-        {images[imageIndex] && (
+        {images[imageIndex] ? (
           <Image
             className="h-full w-full object-contain"
             fill
@@ -49,7 +49,7 @@ export function Gallery({ images }) {
             src={images[imageIndex]?.src}
             priority={true}
           />
-        )}
+        ) : <div className="relative h-full w-full bg-gray-200 animate-pulse"></div>}
 
         {images.length > 1 ? (
           <div className="absolute bottom-[15%] flex w-full justify-center">

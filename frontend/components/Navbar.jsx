@@ -28,7 +28,7 @@ const NavbarComponent = ({ children }) => {
         position="right"
         size="lg"
       >
-        {JSON.parse(localStorage.getItem("cart")).map((item) => (
+        {localStorage && JSON.parse(localStorage.getItem("cart")).map((item) => (
           <>
             {item.productName}
             <br />

@@ -22,6 +22,13 @@ export default function ProductPage({ params }) {
 
 
   useEffect(() => {
+    const items = localStorage.getItem("homepageItems");
+
+    if (items && JSON.parse(items).find((item) => item.data.productID === parseInt(params.handle))) {
+      setItem(JSON.parse(items).find((item) => item.data.productID === parseInt(params.handle)));
+      return;
+    }
+
     axios
       .get(`http://localhost:8080/product/${params.handle}`)
       .then((res) => {
@@ -173,10 +180,10 @@ export default function ProductPage({ params }) {
 }
 
 function RelatedProducts({ imageURL }) {
-  const [relatedProducts, setRelatedProducts] = useState([]);
+  "use client"
+  const [relatedProducts, setRelatedProducts] = useState([{ id: -1 }, { id: -2 }, { id: -3 }, { id: -4 }]);
 
   useEffect(() => {
-    console.log(imageURL);
     axios
       .post("http://localhost:8080/related-products/5", {
         image_url: imageURL,
@@ -187,7 +194,8 @@ function RelatedProducts({ imageURL }) {
       .catch((err) => console.log(err));
   }, []);
 
-  if (!relatedProducts.length) return null;
+  console.log(relatedProducts)
+
 
   return (
     <div className="py-8">
@@ -202,7 +210,7 @@ function RelatedProducts({ imageURL }) {
               className="relative h-full w-full"
               href={`/product/${product.id}`}
             >
-              <GridTileImage
+              {product.id > 0 ? <GridTileImage
                 alt={product.title}
                 active={false}
                 label={{
@@ -213,7 +221,8 @@ function RelatedProducts({ imageURL }) {
                 src={product.styleImages.default.imageURL}
                 fill
                 sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
-              />
+              /> : <div className="relative h-full w-full bg-gray-200 animate-pulse"></div>}
+
             </Link>
           </li>
         ))}

@@ -8,11 +8,17 @@ export function Carousel() {
   const [carouselProducts, setCarouselProducts] = useState([]);
 
   useEffect(() => {
+    if (localStorage.getItem("carouselProducts")) {
+      setCarouselProducts(JSON.parse(localStorage.getItem("carouselProducts")));
+      return;
+    }
+
     axios
       .get("http://localhost:8080/frontpage/10")
       .then((res) => {
         console.log(res);
         setCarouselProducts(res.data);
+        localStorage.setItem("carouselProducts", JSON.stringify(res.data));
       })
       .catch((err) => {
         console.log(err);

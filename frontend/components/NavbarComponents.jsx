@@ -38,39 +38,12 @@ const HeaderComponets = ({ auth, provider, cartopen }) => {
 
   return (
     <>
-      <Modal
-        opened={opened}
-        onClose={close}
-        centered
-        // size="lg"
-        transitionProps={{
-          transition: "fade",
-          duration: 600,
-          timingFunction: "linear",
-        }}
-        style={{ height: "200px" }}
-      >
-        {/* Modal content */}
-        <h2 style={{ fontSize: "24px" }}>Customize your product</h2>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Link href="/chat" onClick={close}>
-            <ActionIcon style={{ height: "400px", width: "400px" }}>
-              <IconWand size="5rem" />
-            </ActionIcon>
-          </Link>
-        </div>
-      </Modal>
+
       <div className="flex items-center cursor-pointer">
         <div>
           <Image
             alt="Logo"
-            src="https://www.nicepng.com/png/detail/802-8027356_fashion-clipart-fashion-icon-fashion-icon-png.png"
+            src="/icon.jpg"
             width="50"
             height="50"
             className="rounded-full"
@@ -78,7 +51,7 @@ const HeaderComponets = ({ auth, provider, cartopen }) => {
         </div>
         <Link href="/">
           {" "}
-          <div className="text-3xl ml-3">Fashion-X</div>
+          <div className="text-3xl ml-5 font-bold mt-1">Fashion-X</div>
         </Link>
       </div>
       <Group spacing={7}>
@@ -91,7 +64,7 @@ const HeaderComponets = ({ auth, provider, cartopen }) => {
       </Group>
       <Group style={{ marginRight: "10px" }}>
         <Tooltip label="Customize">
-          <ActionIcon onClick={open}>
+          <ActionIcon type="a" onClick={() => { window.location = "/chat" }}>
             <IconPlus size="2rem" stroke={1.5} />
           </ActionIcon>
         </Tooltip>
