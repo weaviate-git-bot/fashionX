@@ -8,12 +8,16 @@ import bodyParser from "body-parser"
 import axios from 'axios';
 import { db } from "./firebase.js"
 import pbkdf2 from 'pbkdf2';
+import stripe from "stripe"
+
 
 
 
 
 
 dotenv.config();
+
+const stripeInstance = stripe(process.env.STRIPE_PRIVATE_KEY)
 
 
 const { SCHEMA_CREATED, IMAGES_LOADED } = process.env;
@@ -67,6 +71,35 @@ app.use(cors({
 }))
 app.use(bodyParser.json({ limit: "50mb" }))
 
+
+
+app.post("/create-checkout-session", async (req, res) => {
+    try {
+        const session = await stripeInstance.checkout.sessions.create({
+            payment_method_types: ["card"],
+            mode: "payment",
+            success_url: "https://localhost:3000/success",
+            cancel_url: "https://knowyourmeme.com/failure",
+            line_items: req.body.items.map(item => {
+                return {
+                    price_data: {
+                        currency: "inr",
+                        product_data: {
+                            name: item.productName
+                        },
+                        unit_amount: item.productPrice * 100,
+
+                    },
+                    quantity: 1
+                }
+            })
+        })
+        res.json({ url: session.url })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send("error")
+    }
+})
 
 
 app.get("/frontpage/:count", async (req, res) => {

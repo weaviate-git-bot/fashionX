@@ -6,7 +6,7 @@ import { ProductDescription } from "../../../components";
 import { GridTileImage } from "../../../components/grid/tile";
 import { Gallery } from "../../../components/product/gallery";
 import { useDisclosure } from "@mantine/hooks";
-import { Modal, Skeleton } from "@mantine/core";
+import { Modal, Skeleton, Drawer, Button, Group } from "@mantine/core";
 import TransformModal from "../../../components/TransformModal";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../firebase";
@@ -19,6 +19,8 @@ export default function ProductPage({ params }) {
   const [user] = useAuthState(auth);
   const [item, setItem] = useState({});
   const [opened, { open, close }] = useDisclosure(false);
+
+
   useEffect(() => {
     axios
       .get(`http://localhost:8080/product/${params.handle}`)
@@ -34,7 +36,9 @@ export default function ProductPage({ params }) {
     return <div>loading...</div>;
   }
 
+
   const product = {
+    id: item.productID,
     title: item.data.productDisplayName,
     description: item.data["productDescriptors"].description.value,
     descriptionHtml:
@@ -69,7 +73,6 @@ export default function ProductPage({ params }) {
       },
     ],
     handle: "product-handle",
-    id: item.data.productID,
     tags: ["tag1", "tag2"],
   };
 
@@ -94,6 +97,7 @@ export default function ProductPage({ params }) {
 
   return (
     <>
+
       <Modal
         opened={opened}
         onClose={close}
@@ -110,9 +114,9 @@ export default function ProductPage({ params }) {
         }}
       />
 
-      <div className="mx-auto max-w-screen-2xl px-4">
+      <div className="mx-auto max-w-screen-2xl px-4" style={{ minHeight: "25.2rem" }}>
         <div
-          className="flex flex-col    md:p-12 lg:flex-row lg:gap-8"
+          className="flex flex-col md:p-12 lg:flex-row lg:gap-8"
           style={{
             justifyContent: "space-between",
           }}
@@ -127,13 +131,35 @@ export default function ProductPage({ params }) {
           </div>
 
           {user && (
-            <div className="basis-full lg:basis-2/6 border  border-neutral-200 dark:border-neutral-800 rounded-lg bg-transparent backdrop-filter p-8 backdrop-blur-sm">
+            <div className=" basis-full lg:basis-2/6 border  border-neutral-200 dark:border-neutral-800 rounded-lg bg-transparent backdrop-filter p-8 backdrop-blur-sm">
               <ProductDescription product={product} />
               <button
                 onClick={open}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-5 px-5 rounded-lg w-100"
+                className="bg-blue-500 border-2 border-transparent hover:bg-blue-700 text-white font-bold py-5 px-5 rounded-lg w-100"
               >
                 Virtual Try On
+              </button>
+
+              <button
+                onClick={() => {
+                  const obj = {
+                    productID: product.id,
+                    productImage: product.images[0].url,
+                    productName: product.title,
+                    productPrice: product.priceRange.minVariantPrice.amount,
+                    type: "STORE",
+                  }
+                  let cart = JSON.parse(localStorage.getItem("cart"));
+                  if (!cart) {
+                    cart = [];
+                  }
+                  cart.push(obj);
+                  localStorage.setItem("cart", JSON.stringify(cart));
+
+                }}
+                className="text-blue-500 border-2 border-blue-500 hover:bg-blue-500 hover:text-white font-bold py-5 px-5 rounded-lg w-100 ml-2"
+              >
+                Add to cart
               </button>
             </div>
           )}

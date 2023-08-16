@@ -20,7 +20,7 @@ import Link from "next/link";
 import { useDisclosure } from "@mantine/hooks";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const HeaderComponets = ({ auth, provider }) => {
+const HeaderComponets = ({ auth, provider, cartopen }) => {
   const [opened, { open, close }] = useDisclosure(false);
 
   const signIn = async (e) => {
@@ -97,7 +97,7 @@ const HeaderComponets = ({ auth, provider }) => {
         </Tooltip>
 
         <Group spacing={9}>
-          <IconShoppingCart size="2rem" stroke={1.5} />
+          <IconShoppingCart onClick={cartopen} size="2rem" stroke={1.5} />
         </Group>
         {user ? (
           <Tooltip label="Logout">

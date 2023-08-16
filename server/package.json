@@ -19,6 +19,7 @@
     "firebase": "^10.1.0",
     "form-data": "^4.0.0",
     "pbkdf2": "^3.1.2",
+    "stripe": "^12.18.0",
     "weaviate-client": "^2.14.5"
   }
 }
