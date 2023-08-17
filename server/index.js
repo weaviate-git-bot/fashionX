@@ -224,27 +224,27 @@ app.post("/virtual-try-on", async (req, res) => {
 
 
 app.post("/prompt", async (req, res) => {
-    // const prompt = {
-    //     "prompt": req.body.prompt,
-    //     "n": 1,
-    //     "size": "1024x1024"
-    // }
+    const prompt = {
+        "prompt": req.body.prompt,
+        "n": 1,
+        "size": "1024x1024"
+    }
 
-    // const { data } = await axios.post("https://api.openai.com/v1/images/generations", prompt, {
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
-    //     }
-    // })
+    const { data } = await axios.post("https://api.openai.com/v1/images/generations", prompt, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+        }
+    })
 
-    // const imageUrl = data.data[0].url
-    // const base64Image = await convertImageToBase64(imageUrl)
+    const imageUrl = data.data[0].url
+    const base64Image = await convertImageToBase64(imageUrl)
 
-    // const relatedProducts = await getRelatedProducts(base64Image, 3)
+    const relatedProducts = await getRelatedProducts(base64Image, 3)
 
     res.send({
-        "image_url": "https://www.nicepng.com/png/detail/802-8027356_fashion-clipart-fashion-icon-fashion-icon-png.png",
-        // "related_products": relatedProducts
+        "image_url": imageUrl,
+        "related_products": relatedProducts
     })
 
 })
@@ -286,35 +286,6 @@ createSchema()
     });
 
 
-const temp = async () => {
-
-    const dir = "./images"
-    const files = fs.readdirSync(dir);
-    const newfiles = files.filter(file => !file.endsWith(".json")).map(file => file.substring(0, file.lastIndexOf(".")))
-
-
-    newfiles.forEach(async (file, i) => {
-
-        // const imageMetaData = fs.readFileSync(`${dir}/${file}.json`);
-        // const imageMetaDataJson = JSON.parse(imageMetaData);
-        // imageMetaDataJson.productID = file
-
-        // db.collection("metadata").add(imageMetaDataJson)
-        console.log(file)
-
-        const imageData = fs.readFileSync(`${dir}/${file}.jpg`);
-        const bg4 = Buffer.from(imageData).toString('base64');
-        const res = await client.data.creator().withClassName("FashionY")
-            .withProperties({ image: bg4, "product_id": file })
-            .do()
-
-        console.log(`Image ${i} uploaded`)
-    })
-}
-
-
-
-// temp()
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
 
