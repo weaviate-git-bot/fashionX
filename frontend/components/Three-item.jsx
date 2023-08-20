@@ -44,10 +44,7 @@ export function ThreeItemGrid() {
   const [homepageItems, setHomepageItems] = useState([{ data: {} }, { data: {} }, { data: {} }]);
 
   useEffect(() => {
-    if (localStorage.getItem("homepageItems")) {
-      setHomepageItems(JSON.parse(localStorage.getItem("homepageItems")));
-      return;
-    }
+
 
 
     axios
@@ -55,7 +52,7 @@ export function ThreeItemGrid() {
       .then((res) => {
         console.log(res);
         setHomepageItems(res.data);
-        localStorage.setItem("homepageItems", JSON.stringify(res.data));
+
       })
       .catch((err) => {
         console.log(err);

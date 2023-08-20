@@ -22,21 +22,7 @@ export default function ProductPage({ params }) {
   const [opened, { open, close }] = useDisclosure(false);
 
   useEffect(() => {
-    const items = localStorage.getItem("homepageItems");
 
-    if (
-      items &&
-      JSON.parse(items).find(
-        (item) => item.data.productID === parseInt(params.handle)
-      )
-    ) {
-      setItem(
-        JSON.parse(items).find(
-          (item) => item.data.productID === parseInt(params.handle)
-        )
-      );
-      return;
-    }
 
     axios
       .get(`http://localhost:8080/product/${params.handle}`)
@@ -46,7 +32,7 @@ export default function ProductPage({ params }) {
       .catch((err) => {
         console.log(err);
       });
-  }, [localStorage]);
+  }, []);
 
   if (!item || !item.data) {
     return <div>loading...</div>;
