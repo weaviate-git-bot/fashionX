@@ -66,10 +66,6 @@ But that's not all – FashionX takes personalized recommendations to a whole ne
 
 ### Project Demo 📹
 
-<video controls width="100%">
-  <source src="https://www.youtube.com/watch?v=s1j9Z01McSg" type="video/mp4">
-</video>
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With 🛠️
