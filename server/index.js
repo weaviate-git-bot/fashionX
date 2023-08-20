@@ -103,7 +103,6 @@ app.post("/create-checkout-session", async (req, res) => {
 
 
 app.get("/frontpage/:count", async (req, res) => {
-    //get random images from the database
 
     const count = req.params.count
     const data = await db.collection("metadata").get()
@@ -180,7 +179,7 @@ function getAuthenticationHeader(public_key, secret_key) {
 }
 
 app.get("/models", async (req, res) => {
-    const headers = getAuthenticationHeader("46933177823fe9817e394f404b278836", "3f37d756fa4fed2b5694e673ce422cee")
+    const headers = getAuthenticationHeader(process.env.VIRTUAL_TRY_ON_PUBLIC_KEY, process.env.VIRTUAL_TRY_ON_PRIVATE_KEY)
     const { data } = await axios.get("https://api.revery.ai/console/v1/get_model_list", {
         headers
     })
@@ -199,7 +198,7 @@ app.get("/models", async (req, res) => {
 
 app.post("/virtual-try-on", async (req, res) => {
     const { imageURL, modelID } = req.body
-    const headers = getAuthenticationHeader("46933177823fe9817e394f404b278836", "3f37d756fa4fed2b5694e673ce422cee")
+    const headers = getAuthenticationHeader(process.env.VIRTUAL_TRY_ON_PUBLIC_KEY, process.env.VIRTUAL_TRY_ON_PRIVATE_KEY)
 
     const { data } = await axios.post("https://api.revery.ai/console/v1/process_new_garment", {
         "category": "tops",
@@ -254,29 +253,6 @@ app.post("/prompt", async (req, res) => {
 
 const PORT = process.env.PORT || 8080;
 
-
-
-async function loadImages() {
-
-    if (IMAGES_LOADED) {
-        console.log('Images already loaded');
-        return;
-    }
-
-    const dir = './img';
-    const fs = require('fs');
-    const files = fs.readdirSync(dir);
-    files.forEach(async (file) => {
-        const fileData = fs.readFileSync(`${dir}/${file}`);
-        const bg4 = Buffer.from(fileData).toString('base64');
-        const res = await client.data.creator().withClassName("Fashion")
-            .withProperties({ image: bg4, "product_id": file })
-            .do()
-
-        console.log(res)
-    })
-}
-
 createSchema()
     .then(() => {
         console.log('Schema created');
@@ -285,11 +261,6 @@ createSchema()
         console.log(err);
     });
 
-
-
-
-
-// temp()
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
 

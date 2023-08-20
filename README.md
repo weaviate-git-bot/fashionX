@@ -81,9 +81,19 @@ But that's not all – FashionX takes personalized recommendations to a whole ne
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- GETTING STARTED -->
+## GETTING STARTED 🚀
 
-## HOW TO GET STARTED 🚀
+### PREREQUISITES 📋
+
+- Node.JS
+- Docker
+- NPM
+- Firebase account
+- Stripe account
+
+
+### INSTALLATION 🔧
+
 
 ```sh
 git clone https://github.com/saswatsam786/fashionX.git
@@ -104,6 +114,9 @@ cd server
 npm install
 npm run dev
 ```
+
+**NOTE:** Copy the `.env.example` file and rename it to `.env` and fill in the required credentials.
+
 
 ### HOW TO SETUP DATABASE 📦
 
