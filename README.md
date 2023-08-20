@@ -66,6 +66,8 @@ But that's not all – FashionX takes personalized recommendations to a whole ne
 
 ### Project Demo 📹
 
+
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With 🛠️
