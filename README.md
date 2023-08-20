@@ -4,7 +4,7 @@
 
 <!--
 *** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
+*** That would make this better, please fork the repo and create a pull request
 *** or simply open an issue with the tag "enhancement".
 *** Don't forget to give the project a star!
 *** Thanks again! Now go create something AMAZING! :D
@@ -66,6 +66,9 @@ But that's not all – FashionX takes personalized recommendations to a whole ne
 
 ### Project Demo 📹
 
+
+
+https://github.com/saswatsam786/fashionX/assets/77463804/2b3d49f0-944c-4c6d-874d-c846f9877428
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
